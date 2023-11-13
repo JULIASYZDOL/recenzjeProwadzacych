@@ -1,14 +1,14 @@
-package controllers;
+package pl.ocenProfesora.recenzjeProwadzacych.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import models.Prof;
-import repository.ProfRepository;
+import pl.ocenProfesora.recenzjeProwadzacych.models.Prof;
+import pl.ocenProfesora.recenzjeProwadzacych.repository.ProfRepository;
 
 import java.util.List;
 
-@RestController
 @RequestMapping("/prowadzacy")
+@RestController
 public class ProfController {
     @Autowired
     ProfRepository profRepository;
@@ -18,7 +18,7 @@ public class ProfController {
         return 1;
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public List<Prof> getAll(){
         return profRepository.getAll();
     }
@@ -28,17 +28,18 @@ public class ProfController {
         return profRepository.getById(id);
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public int add(@RequestBody List<Prof> prowadzacy){
         return profRepository.save(prowadzacy);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public int update(@PathVariable("id") int id, @RequestBody Prof updatedProf){
         Prof prof = profRepository.getById(id);
         if(prof != null){
             prof.setNazwa(updatedProf.getNazwa());
             prof.setId(updatedProf.getId());
+            prof.setIdUczelni(updatedProf.getIdUczelni());
 
             profRepository.update(prof);
             return 1;
