@@ -101,3 +101,7 @@ h2 {
 .radio-label:hover ~ .radio-input:checked ~ .radio-label {
   color: darkgoldenrod;
 }
+
+input {
+  color: black;
+}

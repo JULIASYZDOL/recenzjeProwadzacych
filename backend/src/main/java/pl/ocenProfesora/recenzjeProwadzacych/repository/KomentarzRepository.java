@@ -21,6 +21,14 @@ public class KomentarzRepository {
         return jdbcTemplate.queryForObject("SELECT id, tytul, tresc, pseudonim, idProwadzacego FROM komentarz WHERE " + "id = ?", BeanPropertyRowMapper.newInstance(Komentarz.class), id);
     }
 
+    public List<String> getAllPseudonimByIdProwadzacego(int idProwadzacego){
+        return jdbcTemplate.queryForList("SELECT pseudonim FROM komentarz WHERE idProwadzacego = ?", String.class, idProwadzacego);
+    }
+
+    public List<String> getAllTrescByIdProwadzacego(int idProwadzacego){
+        return jdbcTemplate.queryForList("SELECT tresc FROM komentarz WHERE idProwadzacego = ?", String.class, idProwadzacego);
+    }
+
     public int save(List<Komentarz> komentarze) {
         komentarze.forEach(kom -> jdbcTemplate.update("INSERT INTO komentarz(id, tytul, tresc, pseudonim, idProwadzacego) VALUES(?, ?, ?, ?, ?)", kom.getId(), kom.getTytul(), kom.getTresc(), kom.getPseudonim(), kom.getIdProwadzacego()));
 

@@ -7,6 +7,7 @@ import pl.ocenProfesora.recenzjeProwadzacych.repository.UczelniaRepository;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/uczelnie")
 @RestController
 public class UczelniaController {
@@ -26,6 +27,11 @@ public class UczelniaController {
     @GetMapping("/{id}")
     public Uczelnia getById(@PathVariable("id") int id){
         return uczelniaRepository.getById(id);
+    }
+
+    @GetMapping("/byNazwa/{nazwa}")
+    public Integer getByNazwa(@PathVariable("nazwa") String nazwa){
+        return uczelniaRepository.getIdByName(nazwa);
     }
 
     @PostMapping("")

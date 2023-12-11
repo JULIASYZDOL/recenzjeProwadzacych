@@ -7,6 +7,7 @@ import pl.ocenProfesora.recenzjeProwadzacych.repository.OcenaJakRepository;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/ocenyJakosci")
 @RestController
 public class OcenaJakController {

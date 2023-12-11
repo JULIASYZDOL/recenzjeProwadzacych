@@ -7,6 +7,7 @@ import pl.ocenProfesora.recenzjeProwadzacych.repository.ProfRepository;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/prowadzacy")
 @RestController
 public class ProfController {
@@ -23,9 +24,19 @@ public class ProfController {
         return profRepository.getAll();
     }
 
-    @GetMapping("/{id}")
-    public Prof getById(@PathVariable("id") int id){
-        return profRepository.getById(id);
+    @GetMapping("/byId/{id}")
+    public List<Prof> getAllById(@PathVariable("id") int id){
+        return profRepository.getAllById(id);
+    }
+
+    @GetMapping("/byUczelni/{idUczelni}")
+    public List<String> getAllByIdUczelni(@PathVariable("idUczelni") int idUczelni){
+        return profRepository.geAllByIdUczelni(idUczelni);
+    }
+
+    @GetMapping("byNazwa/{nazwa}")
+    public Integer getIdByName(@PathVariable("nazwa") String nazwa){
+        return profRepository.getByName(nazwa);
     }
 
     @PostMapping("")

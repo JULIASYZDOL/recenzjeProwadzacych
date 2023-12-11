@@ -21,6 +21,18 @@ public class ProfRepository {
         return jdbcTemplate.queryForObject("SELECT id, nazwa, idUczelni FROM prowadzacy WHERE " + "id = ?", BeanPropertyRowMapper.newInstance(Prof.class), id);
     }
 
+    public Integer getByName(String name){
+        return jdbcTemplate.queryForObject("SELECT id FROM prowadzacy WHERE " + "nazwa = ?", Integer.class, name);
+    }
+
+    public List<Prof> getAllById(int id){
+        return jdbcTemplate.query("SELECT id, nazwa, idUczelni FROM prowadzacy WHERE " + "id = ?", BeanPropertyRowMapper.newInstance(Prof.class), id);
+    }
+
+    public List<String> geAllByIdUczelni(int idUczelni){
+        return jdbcTemplate.queryForList("SELECT nazwa FROM prowadzacy WHERE idUczelni = ?", String.class, idUczelni);
+    }
+
     public int save(List<Prof> prowadzacy) {
         prowadzacy.forEach(prof -> jdbcTemplate.update("INSERT INTO prowadzacy(id, nazwa, idUczelni) VALUES(?, ?, ?)", prof.getId(), prof.getNazwa(), prof.getIdUczelni()));
 

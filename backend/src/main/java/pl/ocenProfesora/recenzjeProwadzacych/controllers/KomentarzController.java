@@ -7,6 +7,7 @@ import pl.ocenProfesora.recenzjeProwadzacych.repository.KomentarzRepository;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/komentarze")
 @RestController
 public class KomentarzController {
@@ -26,6 +27,16 @@ public class KomentarzController {
     @GetMapping("/{id}")
     public Komentarz getById(@PathVariable("id") int id){
         return komentarzRepository.getById(id);
+    }
+
+    @GetMapping("/Pseudonimy/{idProwadzacego}")
+    public List<String> getPseudonimy(@PathVariable("idProwadzacego") int idProwadzacego){
+        return komentarzRepository.getAllPseudonimByIdProwadzacego(idProwadzacego);
+    }
+
+    @GetMapping("/Tresci/{idProwadzacego}")
+    public List<String> getTresci(@PathVariable("idProwadzacego") int idProwadzacego){
+        return komentarzRepository.getAllTrescByIdProwadzacego(idProwadzacego);
     }
 
     @PostMapping("")

@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import pl.ocenProfesora.recenzjeProwadzacych.models.Uczelnia;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
 
@@ -20,6 +21,15 @@ public class UczelniaRepository {
     public Uczelnia getById(int id){
         return jdbcTemplate.queryForObject("SELECT id, nazwa, miasto FROM uczelnie WHERE " + "id = ?", BeanPropertyRowMapper.newInstance(Uczelnia.class), id);
     }
+
+    public Integer getIdByName(String nazwaUczelni) {
+        try {
+            return jdbcTemplate.queryForObject("SELECT id FROM uczelnie WHERE " + "nazwa = ?", Integer.class, nazwaUczelni);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+       
 
     public int save(List<Uczelnia> uczelnias) {
         uczelnias.forEach(ucz -> jdbcTemplate.update("INSERT INTO uczelnie(id, nazwa, miasto) VALUES(?, ?, ?)", ucz.getId(), ucz.getNazwa(), ucz.getMiasto()));
