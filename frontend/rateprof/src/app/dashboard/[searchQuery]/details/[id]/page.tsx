@@ -4,17 +4,21 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
-async function fetchPseudonimy(pathname: string) {
-  const nazwa_prow = pathname.replace("/dashboard/Politechnika%20Warszawska/details/", "");
 
-  const res = await fetch(`http://localhost:8080/prowadzacy/byNazwa/{nazwa_prow}`);
+async function fetchPseudonimy(pathname: string, id: string | null) {
+  const string_url = `${pathname}?${id}`
+  const url = new URL("http://localhost:3000" + string_url)
+
+  const prowadzacy_nazwa = decodeURIComponent(url.pathname.split('/')[4]);
+
+  const res = await fetch(`http://localhost:8080/prowadzacy/byNazwa/${prowadzacy_nazwa}`);
   if (!res.ok) {
     throw new Error('Failed to fetch data');
   }
   const idProw = await res.json();
   console.log('Fetched idProw:', idProw);
 
-  const res2 = await fetch(`http://localhost:8080/komentarze/Pseudonimy/{idProw}`);
+  const res2 = await fetch(`http://localhost:8080/komentarze/Pseudonimy/${idProw}`);
   if (!res2.ok) {
     throw new Error('Failed to fetch data');
   }
@@ -24,22 +28,25 @@ async function fetchPseudonimy(pathname: string) {
   return names;
 }
 
-async function fetchTresc(pathname: string) {
-  const nazwa_prow = pathname.replace("/dashboard/Politechnika%20Warszawska/details/", "");
+async function fetchTresc(pathname: string, id: string | null) {
+  const string_url = `${pathname}?${id}`
+  const url = new URL("http://localhost:3000" + string_url)
 
-  const res = await fetch(`http://localhost:8080/prowadzacy/byNazwa/{nazwa_prow}`);
+  const prowadzacy_nazwa = decodeURIComponent(url.pathname.split('/')[4]);
+
+  const res = await fetch(`http://localhost:8080/prowadzacy/byNazwa/${prowadzacy_nazwa}`);
   if (!res.ok) {
     throw new Error('Failed to fetch data');
   }
   const idProw = await res.json();
   console.log('Fetched idProw:', idProw);
 
-  const res2 = await fetch(`http://localhost:8080/komentarze/Tresci/{idProw}`);
+  const res2 = await fetch(`http://localhost:8080/komentarze/Tresci/${idProw}`);
   if (!res2.ok) {
     throw new Error('Failed to fetch data');
   }
   const tresc = await res2.json();
-  console.log('Fetched names:', tresc);
+  console.log('Fetched tresc:', tresc);
 
   return tresc;
 }
@@ -47,28 +54,30 @@ async function fetchTresc(pathname: string) {
 export default function Details() {
     const router = useRouter();
     const pathname = usePathname()
-    const id = useSearchParams();
+    const params = useSearchParams();
+    const [id, setId] = useState<string | null>(null);
     const [pseudonimy, setPseudonimy] = useState([]);
     const [tresci, setTresci] = useState([]);
 
-    const url = `${pathname}?${id}`
-    console.log(url)
+    const string_url = `${pathname}?${id}`
+    const url = new URL("http://localhost:3000" + string_url)
 
-    const nazwa = pathname.replace("/dashboard/Politechnika%20Warszawska/details/", "");
-    const nazwa_pln = nazwa.replace("%C5%BC", "ż");
-    const nazwa_bez_spacji_20 = nazwa_pln.replaceAll("%20", " ");
-    const nazwa_bez_wszystkich_spacji = nazwa_bez_spacji_20.replaceAll("+", " ");
+    const uczelnia = decodeURIComponent(url.pathname.split('/')[2]);
+    const prowadzacy = decodeURIComponent(url.pathname.split('/')[4]);
 
-    const nazwa_uczelni = pathname.replace("/dashboard/", "");
-    const nazwa_uczelni2 = nazwa_uczelni.replace("/details/", "");
-    const nazwa_uczelni3 = nazwa_uczelni2.replace(nazwa, "")
-    const uczelnia_bez_spacji_20 = nazwa_uczelni3.replaceAll("%20", " ");
-    const uczelnia_bez_wszystkich_spacji = uczelnia_bez_spacji_20.replaceAll("+", " ");
+    useEffect(() => {
+      const idFromParams = params.get('id');
+      console.log(idFromParams)
+    
+      if (idFromParams) {
+        setId(idFromParams);
+      }
+    }, []);
 
     useEffect(() => {
       const fetchDataAndSetNames = async () => {
         try {
-          const result = await fetchPseudonimy(pathname);
+          const result = await fetchPseudonimy(pathname, id);
           setPseudonimy(result);
         } catch (error) {
           console.error(error);
@@ -81,7 +90,7 @@ export default function Details() {
     useEffect(() => {
       const fetchDataAndSetNames2 = async () => {
         try {
-          const result = await fetchTresc(pathname);
+          const result = await fetchTresc(pathname, id);
           setTresci(result);
         } catch (error) {
           console.error(error);
@@ -95,16 +104,16 @@ export default function Details() {
     <div>
       <button type="button" onClick={() => router.back()}>Wróć do listy prowadzących</button>
       <div className="container">
-        <p>Prowadzący: {nazwa_bez_wszystkich_spacji}</p>
-        <p>Uczelnia: {uczelnia_bez_wszystkich_spacji}</p>
+        <p>Prowadzący: {prowadzacy}</p>
+        <p>Uczelnia: {uczelnia}</p>
         <p>Średnia ocena jakości prowadzenia zajęć: </p>
         <p>Średnia ocena trudności zaliczenia zajęć: </p>
         <div className="button-container">
-          <Link href={`url/ocena`}>
+          <Link href={`${pathname}/ocena?id=${id}`}>
             <button type="button">Oceń</button>
           </Link>
-          <Link href={`url/komentarz`}>
-          <button type="button">Skomentuj</button>
+          <Link href={`${pathname}/komentarz?id=${id}`}>
+            <button type="button">Skomentuj</button>
           </Link>
         </div>
       </div>
@@ -113,8 +122,8 @@ export default function Details() {
           {pseudonimy.map((pseudonim, index) => (
             <li key={index} className="comment-item">
               <strong>Pseudonim:</strong> {pseudonim}
-              <br />
-              <strong>Komentarz:</strong> {pseudonim}
+              <br/>
+              <strong>Komentarz:</strong> {tresci[index]}
             </li>
           ))}
         </ul>
