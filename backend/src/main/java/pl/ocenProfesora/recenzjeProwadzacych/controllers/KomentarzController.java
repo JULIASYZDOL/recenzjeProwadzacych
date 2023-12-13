@@ -39,7 +39,7 @@ public class KomentarzController {
         return komentarzRepository.getAllTrescByIdProwadzacego(idProwadzacego);
     }
 
-    @PostMapping("")
+    @PostMapping("/AddKomentarz")
     public int add(@RequestBody List<Komentarz> kom){
         return komentarzRepository.save(kom);
     }

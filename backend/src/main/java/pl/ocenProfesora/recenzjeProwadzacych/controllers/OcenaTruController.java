@@ -29,7 +29,12 @@ public class OcenaTruController {
         return ocenaTruRepository.getById(id);
     }
 
-    @PostMapping("")
+    @GetMapping("srednia/{idProwadzacego}")
+    public Double getMeanByIdProw(@PathVariable("idProwadzacego") int idProwadzacego){
+        return ocenaTruRepository.getMeanByIdProw(idProwadzacego);
+    }
+
+    @PostMapping("/AddOcenaTru")
     public int add(@RequestBody List<OcenaTrudnosc> oceny){
         return ocenaTruRepository.save(oceny);
     }

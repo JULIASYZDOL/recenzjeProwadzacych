@@ -21,6 +21,10 @@ public class OcenaJakRepository {
         return jdbcTemplate.queryForObject("SELECT id, idProwadzacego, wartosc FROM ocenyJakosc WHERE " + "id = ?", BeanPropertyRowMapper.newInstance(OcenaJakosc.class), id);
     }
 
+    public Double getMeanByIdProw(int idProw){
+        return jdbcTemplate.queryForObject("SELECT AVG(wartosc) FROM ocenyJakosc WHERE " + "idProwadzacego = ?", Double.class, idProw);
+    }
+
     public int save(List<OcenaJakosc> oceny) {
         oceny.forEach(ocena-> jdbcTemplate.update("INSERT INTO ocenyJakosc(id, idProwadzacego, wartosc) VALUES(?, ?, ?)", ocena.getId(), ocena.getIdProwadzacego(), ocena.getWartosc()));
 

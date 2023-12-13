@@ -1,28 +1,48 @@
 'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function Komentarz() {
-
   const router = useRouter();
   const [pseudonimQuery, setPseudonimQuery] = useState('');
   const [trescQuery, setTrescQuery] = useState('');
+  const pathname = usePathname();
   const params = useSearchParams();
+  const [id, setId] = useState<string | null>(null);
 
-  const idProwadzacego = params.get('id') || ''; 
+  useEffect(() => {
+    const idFromParams = params.get('id');
+    console.log(idFromParams);
+
+    if (idFromParams) {
+      setId(idFromParams);
+    }
+  }, [params]);
 
   const handlePublish = async () => {
     try {
-      const apiPath = 'http://localhost:8080/komentarze';
+      const apiPath = 'http://localhost:8080/komentarze/AddKomentarz';
 
-      const commentData = {
+      const string_url = `${pathname}?${id}`;
+      const url = new URL("http://localhost:3000" + string_url);
+
+      const prowadzacy = decodeURIComponent(url.pathname.split('/')[4]);
+
+      const res = await fetch(`http://localhost:8080/prowadzacy/byNazwa/${prowadzacy}`);
+      if (!res.ok) {
+        throw new Error('Failed to fetch data');
+      }
+      const idProw = await res.json();
+      console.log('Fetched idProw:', idProw);
+
+      const commentData = [{
         id: Number,
         tytul: "Komentarz",
         tresc: trescQuery,
         pseudonim: pseudonimQuery,
-        idProwadzacego: idProwadzacego
-      };
+        idProwadzacego: idProw
+      }];
 
       const response = await fetch(apiPath, {
         method: 'POST',
@@ -43,23 +63,23 @@ export default function Komentarz() {
 
   return (
     <div className="container">
-        <h1>Dodajesz komentarz</h1>
-        <input
+      <h1>Dodajesz komentarz</h1>
+      <input
         type="text"
         placeholder="Twój pseudonim"
         value={pseudonimQuery}
         onChange={(e) => setPseudonimQuery(e.target.value)}
-        />
-        <input
+      />
+      <input
         type="text"
         placeholder="Treść komentarza"
         value={trescQuery}
         onChange={(e) => setTrescQuery(e.target.value)}
-        />
-        <div className="button-container">
-          <button type="button" onClick={handlePublish}>Opublikuj</button>
-          <button type="button" onClick={() => router.back()}>Anuluj</button>
-        </div>
+      />
+      <div className="button-container">
+        <button type="button" onClick={handlePublish}>Opublikuj</button>
+        <button type="button" onClick={() => router.back()}>Anuluj</button>
+      </div>
     </div>
-  )
+  );
 }
