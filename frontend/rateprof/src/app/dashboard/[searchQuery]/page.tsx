@@ -51,17 +51,24 @@ export default function Page2() {
   return (
     <div>
       <button type="button" onClick={() => router.back()}>Wróć do wyszukiwarki uczelni</button>
-      <div className="container">
-        <h1>Lista prowadzących na uczelni {uczelnia_bez_wszystkich_spacji}: </h1>
+      <div className="container mx-auto px-6 py-12 h-full flex justify-center items-center">
+          <div className="md:w-8/12 lg:w-5/12 bg-white px-8 py-10">
+        <h3>Lista prowadzących na uczelni <strong>{uczelnia_bez_wszystkich_spacji}</strong>: </h3>
         <ul>
           {names.map((name, index) => (
             <li key={index}>
               <Link href={`${pathname}/details/${name}`}>
-                {name}
+              <button
+              type="submit"
+              style={{ backgroundColor: `${"#3446eb"}` }}
+              className="inline-block px-7 py-4 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
+            >{name}
+            </button>
               </Link>
             </li>
           ))}
         </ul>
+      </div>
       </div>
     </div>
   );

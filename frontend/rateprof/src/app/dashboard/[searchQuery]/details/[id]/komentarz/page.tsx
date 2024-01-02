@@ -11,6 +11,10 @@ export default function Komentarz() {
   const params = useSearchParams();
   const [id, setId] = useState<string | null>(null);
 
+  const input_style =
+    "form-control block w-full px-4 py-5 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none";
+
+
   useEffect(() => {
     const idFromParams = params.get('id');
     console.log(idFromParams);
@@ -62,24 +66,28 @@ export default function Komentarz() {
   };
 
   return (
-    <div className="container">
-      <h1>Dodajesz komentarz</h1>
+    <div className="container mx-auto px-6 py-12 h-full flex justify-center items-center">
+        <div className="md:w-8/12 lg:w-5/12 bg-white px-8 py-10">
+      <h3><strong>Dodajesz komentarz</strong></h3>
       <input
         type="text"
         placeholder="Twój pseudonim"
         value={pseudonimQuery}
         onChange={(e) => setPseudonimQuery(e.target.value)}
+        className={`${input_style}`}
       />
       <input
         type="text"
         placeholder="Treść komentarza"
         value={trescQuery}
         onChange={(e) => setTrescQuery(e.target.value)}
+        className={`${input_style}`}
       />
       <div className="button-container">
         <button type="button" onClick={handlePublish}>Opublikuj</button>
         <button type="button" onClick={() => router.back()}>Anuluj</button>
       </div>
+    </div>
     </div>
   );
 }

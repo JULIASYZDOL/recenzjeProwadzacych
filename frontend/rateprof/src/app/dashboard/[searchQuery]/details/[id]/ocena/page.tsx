@@ -82,8 +82,9 @@ export default function Ocena() {
   };
 
   return (
-    <div className="container">
-        <h1>Twoja ocena jakości prowadzenia zajęć:</h1>
+    <div className="container mx-auto px-6 py-12 h-full flex justify-center items-center">
+        <div className="md:w-8/12 lg:w-5/12 bg-white px-8 py-10">
+        <h4><strong>Twoja ocena jakości prowadzenia zajęć:</strong></h4>
         <form className="star-rating">
           <input className="radio-input" type="radio" id="star5" name="star-input" value="5" onChange={(e) => setOcenaJakości(e.target.value)}/>
           <label className="radio-label" htmlFor="star5" title="5 gwiazdek">5 gwiazdek</label>
@@ -100,7 +101,7 @@ export default function Ocena() {
           <input className="radio-input" type="radio" id="star1" name="star-input" value="1" onChange={(e) => setOcenaJakości(e.target.value)}/>
           <label className="radio-label" htmlFor="star1" title="1 gwiazdka">1 gwiazdka</label>
         </form>
-        <h1>Twoja ocena trudności zaliczenia zajęć:</h1>
+        <h4><strong>Twoja ocena trudności zaliczenia zajęć:</strong></h4>
         <form className="star-rating">
           <input className="radio-input" type="radio" id="star25" name="star-input" value="5" onChange={(e) => setOcenaTrudności(e.target.value)}/>
           <label className="radio-label" htmlFor="star25" title="5 gwiazdek">5 gwiazdek</label>
@@ -121,7 +122,7 @@ export default function Ocena() {
           <button type="button" onClick={handlePublish}>Zatwierdź</button>
           <button type="button" onClick={() => router.back()}>Anuluj</button>
         </div>
-        
+        </div>
     </div>
   )
 }

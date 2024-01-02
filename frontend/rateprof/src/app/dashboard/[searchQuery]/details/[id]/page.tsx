@@ -97,111 +97,123 @@ async function fetchTresc(pathname: string, id: string | null) {
 }
 
 export default function Details() {
-    const router = useRouter();
-    const pathname = usePathname()
-    const params = useSearchParams();
-    const [id, setId] = useState<string | null>(null);
-    const [pseudonimy, setPseudonimy] = useState([]);
-    const [tresci, setTresci] = useState([]);
-    const [ocenaJak, setOcenaJak] = useState([]);
-    const [ocenaTru, setOcenaTru] = useState([]);
+  const router = useRouter();
+  const pathname = usePathname()
+  const params = useSearchParams();
+  const [id, setId] = useState<string | null>(null);
+  const [pseudonimy, setPseudonimy] = useState([]);
+  const [tresci, setTresci] = useState([]);
+  const [ocenaJak, setOcenaJak] = useState([]);
+  const [ocenaTru, setOcenaTru] = useState([]);
 
 
-    const string_url = `${pathname}?${id}`
-    const url = new URL("http://localhost:3000" + string_url)
+  const string_url = `${pathname}?${id}`
+  const url = new URL("http://localhost:3000" + string_url)
 
-    const uczelnia = decodeURIComponent(url.pathname.split('/')[2]);
-    const prowadzacy = decodeURIComponent(url.pathname.split('/')[4]);
+  const uczelnia = decodeURIComponent(url.pathname.split('/')[2]);
+  const prowadzacy = decodeURIComponent(url.pathname.split('/')[4]);
 
-    useEffect(() => {
-      const idFromParams = params.get('id');
-      console.log(idFromParams)
-    
-      if (idFromParams) {
-        setId(idFromParams);
+  useEffect(() => {
+    const idFromParams = params.get('id');
+    console.log(idFromParams)
+
+    if (idFromParams) {
+      setId(idFromParams);
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchDataAndSetNames = async () => {
+      try {
+        const result = await fetchPseudonimy(pathname, id);
+        setPseudonimy(result);
+      } catch (error) {
+        console.error(error);
       }
-    }, []);
+    };
 
-    useEffect(() => {
-      const fetchDataAndSetNames = async () => {
-        try {
-          const result = await fetchPseudonimy(pathname, id);
-          setPseudonimy(result);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-  
-      fetchDataAndSetNames();
-    }, [pathname]);
+    fetchDataAndSetNames();
+  }, [pathname]);
 
-    useEffect(() => {
-      const fetchDataAndSetNames2 = async () => {
-        try {
-          const result = await fetchTresc(pathname, id);
-          setTresci(result);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-  
-      fetchDataAndSetNames2();
-    }, [pathname]);
+  useEffect(() => {
+    const fetchDataAndSetNames2 = async () => {
+      try {
+        const result = await fetchTresc(pathname, id);
+        setTresci(result);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-    useEffect(() => {
-      const fetchDataAndSetNames3 = async () => {
-        try {
-          const result = await fetchOcenaJak(pathname, id);
-          setOcenaJak(result);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-  
-      fetchDataAndSetNames3();
-    }, [pathname]);
+    fetchDataAndSetNames2();
+  }, [pathname]);
 
-    useEffect(() => {
-      const fetchDataAndSetNames4 = async () => {
-        try {
-          const result = await fetchOcenaTru(pathname, id);
-          setOcenaTru(result);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-  
-      fetchDataAndSetNames4();
-    }, [pathname]);
+  useEffect(() => {
+    const fetchDataAndSetNames3 = async () => {
+      try {
+        const result = await fetchOcenaJak(pathname, id);
+        setOcenaJak(result);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-    return (
+    fetchDataAndSetNames3();
+  }, [pathname]);
+
+  useEffect(() => {
+    const fetchDataAndSetNames4 = async () => {
+      try {
+        const result = await fetchOcenaTru(pathname, id);
+        setOcenaTru(result);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchDataAndSetNames4();
+  }, [pathname]);
+
+  return (
     <div>
       <button type="button" onClick={() => router.back()}>Wróć do listy prowadzących</button>
-      <div className="container">
-        <p>Prowadzący: {prowadzacy}</p>
-        <p>Uczelnia: {uczelnia}</p>
-        <p>Średnia ocena jakości prowadzenia zajęć: {ocenaJak}</p>
-        <p>Średnia ocena trudności zaliczenia zajęć: {ocenaTru}</p>
-        <div className="button-container">
-          <Link href={`${pathname}/ocena?id=${id}`}>
-            <button type="button">Oceń</button>
-          </Link>
-          <Link href={`${pathname}/komentarz?id=${id}`}>
-            <button type="button">Skomentuj</button>
-          </Link>
+      <div className="container mx-auto px-6 py-12 h-full flex justify-center items-center">
+        <div className="md:w-8/12 lg:w-5/12 bg-white px-8 py-10">
+          <h1><strong>Prowadzący:</strong> {prowadzacy}</h1>
+          <h1><strong>Uczelnia:</strong> {uczelnia}</h1>
+          <h1><strong>Średnia ocena jakości prowadzenia zajęć:</strong> {ocenaJak}</h1>
+          <h1><strong>Średnia ocena trudności zaliczenia zajęć:</strong> {ocenaTru}</h1>
+            <Link href={`${pathname}/ocena?id=${id}`}>
+            <button
+              type="submit"
+              style={{ backgroundColor: `${"#3446eb"}` }}
+              className="inline-block px-7 py-4 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
+            >Oceń
+            </button>
+            </Link>
         </div>
       </div>
-        <h2>Komentarze: </h2>
-        <ul className="comment-list">
-          {pseudonimy.map((pseudonim, index) => (
-            <li key={index} className="comment-item">
-              <strong>Pseudonim:</strong> {pseudonim}
-              <br/>
-              <strong>Komentarz:</strong> {tresci[index]}
-            </li>
-          ))}
-        </ul>
+      <div className="container mx-auto px-6 py-12 h-full flex justify-center items-center">
+      <div className="md:w-8/12 lg:w-5/12 bg-white px-8 py-10">
+      <h3><strong>Komentarze: </strong></h3>
+      <ul className="comment-list">
+        {pseudonimy.map((pseudonim, index) => (
+          <li key={index} className="comment-item">
+            <h1><strong>Pseudonim:</strong> {pseudonim}</h1>
+            <h1><strong>Komentarz:</strong> {tresci[index]}</h1>
+          </li>
+        ))}
+      </ul>
+            <Link href={`${pathname}/komentarz?id=${id}`}>
+            <button
+              type="submit"
+              style={{ backgroundColor: `${"#3446eb"}` }}
+              className="inline-block px-7 py-4 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
+            >Skomentuj
+            </button>
+            </Link>
     </div>
-
+    </div>
+    </div>
   );
 };
