@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { signOut } from "next-auth/react";
 
 async function fetchData(pathname: string) {
   const nazwa_uczelni = pathname.replace("/dashboard/", "");
@@ -48,9 +49,22 @@ export default function Page2() {
     fetchDataAndSetNames();
   }, [pathname]);
 
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: '/' });
+  };
+
   return (
     <div>
-      <button type="button" onClick={() => router.back()}>Wróć do wyszukiwarki uczelni</button>
+      <header style={{ backgroundColor: '#000', padding: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Link href="/" style={{ color: '#fff', marginRight: '10px' }}>Home</Link>
+          <button type="button" style={{ color: '#fff', marginRight: '10px' }} onClick={() => router.back()}>Wróć do wyszukiwarki uczelni</button>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Link href="/profile" style={{ color: '#fff', marginRight: '10px' }}>Profil</Link>
+          <button type="button" style={{ color: '#fff' }} onClick={handleLogout}>Wyloguj</button>
+        </div>
+      </header>
       <div className="container mx-auto px-6 py-12 h-full flex justify-center items-center">
           <div className="md:w-8/12 lg:w-5/12 bg-white px-8 py-10">
         <h3>Lista prowadzących na uczelni <strong>{uczelnia_bez_wszystkich_spacji}</strong>: </h3>

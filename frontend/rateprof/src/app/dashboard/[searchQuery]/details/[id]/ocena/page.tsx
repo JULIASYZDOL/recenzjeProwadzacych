@@ -2,6 +2,8 @@
 
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
+import { signOut } from "next-auth/react";
+import Link from 'next/link';
 
 export default function Ocena() {
   const router = useRouter();
@@ -80,11 +82,27 @@ export default function Ocena() {
       console.error('Proszę wybrać oceny dla obu kategorii.');
     }
   };
+  
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: '/' });
+  };
 
   return (
+    <div>
+    <header style={{ backgroundColor: '#000', padding: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Link href="/" style={{ color: '#fff', marginRight: '10px' }}>Home</Link>
+          <button type="button" style={{ color: '#fff', marginRight: '10px' }} onClick={() => router.back()}>Wróć do strony prowadzącego</button>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Link href="/profile" style={{ color: '#fff', marginRight: '10px' }}>Profil</Link>
+          <button type="button" style={{ color: '#fff' }} onClick={handleLogout}>Wyloguj</button>
+        </div>
+      </header>
     <div className="container mx-auto px-6 py-12 h-full flex justify-center items-center">
         <div className="md:w-8/12 lg:w-5/12 bg-white px-8 py-10">
         <h4><strong>Twoja ocena jakości prowadzenia zajęć:</strong></h4>
+        <div className="flex justify-center items-center">
         <form className="star-rating">
           <input className="radio-input" type="radio" id="star5" name="star-input" value="5" onChange={(e) => setOcenaJakości(e.target.value)}/>
           <label className="radio-label" htmlFor="star5" title="5 gwiazdek">5 gwiazdek</label>
@@ -101,7 +119,9 @@ export default function Ocena() {
           <input className="radio-input" type="radio" id="star1" name="star-input" value="1" onChange={(e) => setOcenaJakości(e.target.value)}/>
           <label className="radio-label" htmlFor="star1" title="1 gwiazdka">1 gwiazdka</label>
         </form>
+        </div>
         <h4><strong>Twoja ocena trudności zaliczenia zajęć:</strong></h4>
+        <div className="flex justify-center items-center">
         <form className="star-rating">
           <input className="radio-input" type="radio" id="star25" name="star-input" value="5" onChange={(e) => setOcenaTrudności(e.target.value)}/>
           <label className="radio-label" htmlFor="star25" title="5 gwiazdek">5 gwiazdek</label>
@@ -118,11 +138,25 @@ export default function Ocena() {
           <input className="radio-input" type="radio" id="star21" name="star-input" value="1" onChange={(e) => setOcenaTrudności(e.target.value)}/>
           <label className="radio-label" htmlFor="star21" title="1 gwiazdka">1 gwiazdka</label>
         </form>
+        </div>
         <div className="button-container">
-          <button type="button" onClick={handlePublish}>Zatwierdź</button>
-          <button type="button" onClick={() => router.back()}>Anuluj</button>
+          <button
+              type="submit"
+              style={{ backgroundColor: `${"#3446eb"}` }}
+              className="inline-block px-7 py-4 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
+              onClick={handlePublish}
+            >Zatwierdź
+            </button>
+          <button
+              type="submit"
+              style={{ backgroundColor: `${"#3446eb"}` }}
+              className="inline-block px-7 py-4 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
+              onClick={() => router.back()}
+            >Anuluj
+            </button>
         </div>
         </div>
+    </div>
     </div>
   )
 }

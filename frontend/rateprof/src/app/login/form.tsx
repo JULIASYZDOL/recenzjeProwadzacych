@@ -38,7 +38,7 @@ export const LoginForm = () => {
         setError("invalid email or password");
       }
     } catch (error: any) {
-      setLoading(false); 
+      setLoading(false);
       setError(error);
     }
   };
@@ -65,7 +65,7 @@ export const LoginForm = () => {
           name="email"
           value={formValues.email}
           onChange={handleChange}
-          placeholder="Email address"
+          placeholder="Email"
           className={`${input_style}`}
         />
       </div>
@@ -78,7 +78,7 @@ export const LoginForm = () => {
           name="password"
           value={formValues.password}
           onChange={handleChange}
-          placeholder="Password"
+          placeholder="Hasło"
           className={`${input_style}`}
         />
       </div>
@@ -105,13 +105,12 @@ export const LoginForm = () => {
         onClick={() => signIn("google", { callbackUrl })}
         role="button"
       >
-        {/*<img
+        <img
           className="pr-2"
-          src="google.png"
-          alt=""
+          src="/google.png"
           style={{ height: "2rem" }}
-      />*/}
-        Continue with Google
+        />
+        Kontynuuj przez Google
       </a>
 
       {/* Sign In with GitHub button */}
@@ -121,13 +120,12 @@ export const LoginForm = () => {
         onClick={() => signIn("github", { callbackUrl })}
         role="button"
       >
-        {/*<img
+        <img
           className="pr-2"
-          src="github.png"
-          alt=""
+          src="/github.png"
           style={{ height: "2.2rem" }}
-    />*/}
-        Continue with GitHub
+        />
+        Kontynuuj przez GitHub
       </a>
     </form>
   );

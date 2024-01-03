@@ -2,7 +2,9 @@
 
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
+import { signOut } from "next-auth/react";
+import Link from "next/link";
+
 
 async function fetchOcenaJak(pathname: string, id: string | null) {
   const string_url = `${pathname}?${id}`
@@ -106,7 +108,6 @@ export default function Details() {
   const [ocenaJak, setOcenaJak] = useState([]);
   const [ocenaTru, setOcenaTru] = useState([]);
 
-
   const string_url = `${pathname}?${id}`
   const url = new URL("http://localhost:3000" + string_url)
 
@@ -174,46 +175,59 @@ export default function Details() {
     fetchDataAndSetNames4();
   }, [pathname]);
 
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: '/' });
+  };
+
   return (
     <div>
-      <button type="button" onClick={() => router.back()}>Wróć do listy prowadzących</button>
+      <header style={{ backgroundColor: '#000', padding: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Link href="/" style={{ color: '#fff', marginRight: '10px' }}>Home</Link>
+          <button type="button" style={{ color: '#fff', marginRight: '10px' }} onClick={() => router.back()}>Wróć do listy prowadzących</button>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Link href="/profile" style={{ color: '#fff', marginRight: '10px' }}>Profil</Link>
+          <button type="button" style={{ color: '#fff' }} onClick={handleLogout}>Wyloguj</button>
+        </div>
+      </header>
       <div className="container mx-auto px-6 py-12 h-full flex justify-center items-center">
         <div className="md:w-8/12 lg:w-5/12 bg-white px-8 py-10">
           <h1><strong>Prowadzący:</strong> {prowadzacy}</h1>
           <h1><strong>Uczelnia:</strong> {uczelnia}</h1>
           <h1><strong>Średnia ocena jakości prowadzenia zajęć:</strong> {ocenaJak}</h1>
           <h1><strong>Średnia ocena trudności zaliczenia zajęć:</strong> {ocenaTru}</h1>
-            <Link href={`${pathname}/ocena?id=${id}`}>
+          <Link href={`${pathname}/ocena?id=${id}`}>
             <button
               type="submit"
               style={{ backgroundColor: `${"#3446eb"}` }}
               className="inline-block px-7 py-4 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
             >Oceń
             </button>
-            </Link>
+          </Link>
         </div>
       </div>
       <div className="container mx-auto px-6 py-12 h-full flex justify-center items-center">
-      <div className="md:w-8/12 lg:w-5/12 bg-white px-8 py-10">
-      <h3><strong>Komentarze: </strong></h3>
-      <ul className="comment-list">
-        {pseudonimy.map((pseudonim, index) => (
-          <li key={index} className="comment-item">
-            <h1><strong>Pseudonim:</strong> {pseudonim}</h1>
-            <h1><strong>Komentarz:</strong> {tresci[index]}</h1>
-          </li>
-        ))}
-      </ul>
-            <Link href={`${pathname}/komentarz?id=${id}`}>
+        <div className="md:w-8/12 lg:w-5/12 bg-white px-8 py-10">
+          <h3><strong>Komentarze: </strong></h3>
+          <ul className="comment-list">
+            {pseudonimy.map((pseudonim, index) => (
+              <li key={index} className="comment-item">
+                <h1><strong>Pseudonim:</strong> {pseudonim}</h1>
+                <h1><strong>Komentarz:</strong> {tresci[index]}</h1>
+              </li>
+            ))}
+          </ul>
+          <Link href={`${pathname}/komentarz?id=${id}`}>
             <button
               type="submit"
               style={{ backgroundColor: `${"#3446eb"}` }}
               className="inline-block px-7 py-4 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
             >Skomentuj
             </button>
-            </Link>
-    </div>
-    </div>
+          </Link>
+        </div>
+      </div>
     </div>
   );
 };

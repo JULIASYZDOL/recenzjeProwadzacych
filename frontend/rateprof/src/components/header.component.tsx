@@ -1,12 +1,10 @@
 "use client";
 
-import { signOut} from "next-auth/react";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
-export default async function Header() {
-  const session = await getServerSession(authOptions);
+const Header = () => {
+  const { data: session } = useSession();
   const user = session?.user;
 
   return (
@@ -54,3 +52,5 @@ export default async function Header() {
     </header>
   );
 };
+
+export default Header;
