@@ -8,14 +8,14 @@ import { signOut } from "next-auth/react";
 async function fetchData(pathname: string) {
   const nazwa_uczelni = pathname.replace("/dashboard/", "");
 
-  const res = await fetch(`http://localhost:8080/uczelnie/byNazwa/${nazwa_uczelni}`);
+  const res = await fetch(`http://localhost:8081/uczelnie/byNazwa/${nazwa_uczelni}`);
   if (!res.ok) {
     throw new Error('Failed to fetch data');
   }
   const idUczelni = await res.json();
   console.log('Fetched idUczelni:', idUczelni);
 
-  const res2 = await fetch(`http://localhost:8080/prowadzacy/byUczelni/${idUczelni}`);
+  const res2 = await fetch(`http://localhost:8081/prowadzacy/byUczelni/${idUczelni}`);
   if (!res2.ok) {
     throw new Error('Failed to fetch data');
   }

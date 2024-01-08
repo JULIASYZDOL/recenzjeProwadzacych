@@ -12,14 +12,14 @@ async function fetchOcenaJak(pathname: string, id: string | null) {
 
   const prowadzacy_nazwa = decodeURIComponent(url.pathname.split('/')[4]);
 
-  const res = await fetch(`http://localhost:8080/prowadzacy/byNazwa/${prowadzacy_nazwa}`);
+  const res = await fetch(`http://localhost:8081/prowadzacy/byNazwa/${prowadzacy_nazwa}`);
   if (!res.ok) {
     throw new Error('Failed to fetch data');
   }
   const idProw = await res.json();
   console.log('Fetched idProw:', idProw);
 
-  const res2 = await fetch(`http://localhost:8080/ocenyJakosci/srednia/${idProw}`);
+  const res2 = await fetch(`http://localhost:8081/ocenyJakosci/srednia/${idProw}`);
   if (!res2.ok) {
     throw new Error('Failed to fetch data');
   }
@@ -35,14 +35,14 @@ async function fetchOcenaTru(pathname: string, id: string | null) {
 
   const prowadzacy_nazwa = decodeURIComponent(url.pathname.split('/')[4]);
 
-  const res = await fetch(`http://localhost:8080/prowadzacy/byNazwa/${prowadzacy_nazwa}`);
+  const res = await fetch(`http://localhost:8081/prowadzacy/byNazwa/${prowadzacy_nazwa}`);
   if (!res.ok) {
     throw new Error('Failed to fetch data');
   }
   const idProw = await res.json();
   console.log('Fetched idProw:', idProw);
 
-  const res2 = await fetch(`http://localhost:8080/ocenyTrudnosci/srednia/${idProw}`);
+  const res2 = await fetch(`http://localhost:8081/ocenyTrudnosci/srednia/${idProw}`);
   if (!res2.ok) {
     throw new Error('Failed to fetch data');
   }
@@ -58,14 +58,14 @@ async function fetchPseudonimy(pathname: string, id: string | null) {
 
   const prowadzacy_nazwa = decodeURIComponent(url.pathname.split('/')[4]);
 
-  const res = await fetch(`http://localhost:8080/prowadzacy/byNazwa/${prowadzacy_nazwa}`);
+  const res = await fetch(`http://localhost:8081/prowadzacy/byNazwa/${prowadzacy_nazwa}`);
   if (!res.ok) {
     throw new Error('Failed to fetch data');
   }
   const idProw = await res.json();
   console.log('Fetched idProw:', idProw);
 
-  const res2 = await fetch(`http://localhost:8080/komentarze/Pseudonimy/${idProw}`);
+  const res2 = await fetch(`http://localhost:8081/komentarze/Pseudonimy/${idProw}`);
   if (!res2.ok) {
     throw new Error('Failed to fetch data');
   }
@@ -81,14 +81,14 @@ async function fetchTresc(pathname: string, id: string | null) {
 
   const prowadzacy_nazwa = decodeURIComponent(url.pathname.split('/')[4]);
 
-  const res = await fetch(`http://localhost:8080/prowadzacy/byNazwa/${prowadzacy_nazwa}`);
+  const res = await fetch(`http://localhost:8081/prowadzacy/byNazwa/${prowadzacy_nazwa}`);
   if (!res.ok) {
     throw new Error('Failed to fetch data');
   }
   const idProw = await res.json();
   console.log('Fetched idProw:', idProw);
 
-  const res2 = await fetch(`http://localhost:8080/komentarze/Tresci/${idProw}`);
+  const res2 = await fetch(`http://localhost:8081/komentarze/Tresci/${idProw}`);
   if (!res2.ok) {
     throw new Error('Failed to fetch data');
   }

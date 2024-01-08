@@ -18,15 +18,15 @@ export default function Ocena() {
 
   const handlePublish = async () => {
     if (ocenaJakości !== null && ocenaTrudności !== null) {
-      const apiPathJak = 'http://localhost:8080/ocenyJakosci/AddOcenaJak';
-      const apiPathTru = 'http://localhost:8080/ocenyTrudnosci/AddOcenaTru';
+      const apiPathJak = 'http://localhost:8081/ocenyJakosci/AddOcenaJak';
+      const apiPathTru = 'http://localhost:8081/ocenyTrudnosci/AddOcenaTru';
   
       const string_url = `${pathname}?${id}`;
       const url = new URL("http://localhost:3000" + string_url);
   
       const prowadzacy = decodeURIComponent(url.pathname.split('/')[4]);
   
-      const res = await fetch(`http://localhost:8080/prowadzacy/byNazwa/${prowadzacy}`);
+      const res = await fetch(`http://localhost:8081/prowadzacy/byNazwa/${prowadzacy}`);
       if (!res.ok) {
         throw new Error('Failed to fetch data');
       }

@@ -1,7 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import Link from "next/link";
-import Header from "@/components/header.component";
 
 export default async function Profile() {
   const session = await getServerSession(authOptions);
@@ -12,7 +11,7 @@ export default async function Profile() {
       <div className="container mx-auto px-6 py-12 h-full flex justify-center items-center">
         <div className="md:w-8/12 lg:w-5/12 bg-white px-8 py-10">
           <div style={{ textAlign: 'center' }}>
-            <h3><strong>Zalogowano jako:</strong></h3>
+            <h3><strong>Pomyślnie zalogowano</strong></h3>
           </div>
           {!user ? (
             <p>Loading...</p>

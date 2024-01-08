@@ -26,7 +26,7 @@ export default function Start() {
                     onClick={handleLoginClick}
                     role="button"
                 >
-                Zaloguj się!
+                Zaloguj/Zarejestruj się!
                 </a>
                 </div></div>
     </div>

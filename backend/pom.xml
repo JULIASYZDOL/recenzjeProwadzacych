@@ -99,6 +99,12 @@
 			<artifactId>json</artifactId>
 			<version>20231013</version>
 		</dependency>
+		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-spring-boot-starter</artifactId>
+			<version>23.0.3</version>
+		</dependency>
+
 		<!--
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

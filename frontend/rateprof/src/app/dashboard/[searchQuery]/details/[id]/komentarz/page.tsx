@@ -27,14 +27,14 @@ export default function Komentarz() {
 
   const handlePublish = async () => {
     try {
-      const apiPath = 'http://localhost:8080/komentarze/AddKomentarz';
+      const apiPath = 'http://localhost:8081/komentarze/AddKomentarz';
 
       const string_url = `${pathname}?${id}`;
       const url = new URL("http://localhost:3000" + string_url);
 
       const prowadzacy = decodeURIComponent(url.pathname.split('/')[4]);
 
-      const res = await fetch(`http://localhost:8080/prowadzacy/byNazwa/${prowadzacy}`);
+      const res = await fetch(`http://localhost:8081/prowadzacy/byNazwa/${prowadzacy}`);
       if (!res.ok) {
         throw new Error('Failed to fetch data');
       }
