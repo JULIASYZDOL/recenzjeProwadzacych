@@ -61,7 +61,6 @@ export default function Page2() {
           <button type="button" style={{ color: '#fff', marginRight: '10px' }} onClick={() => router.back()}>Wróć do wyszukiwarki uczelni</button>
         </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Link href="/profile" style={{ color: '#fff', marginRight: '10px' }}>Profil</Link>
           <button type="button" style={{ color: '#fff' }} onClick={handleLogout}>Wyloguj</button>
         </div>
       </header>

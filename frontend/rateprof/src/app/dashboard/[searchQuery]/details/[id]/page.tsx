@@ -187,7 +187,6 @@ export default function Details() {
           <button type="button" style={{ color: '#fff', marginRight: '10px' }} onClick={() => router.back()}>Wróć do listy prowadzących</button>
         </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Link href="/profile" style={{ color: '#fff', marginRight: '10px' }}>Profil</Link>
           <button type="button" style={{ color: '#fff' }} onClick={handleLogout}>Wyloguj</button>
         </div>
       </header>

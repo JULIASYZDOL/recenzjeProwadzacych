@@ -51,7 +51,8 @@ export const LoginForm = () => {
   const input_style =
     "form-control block w-full px-4 py-5 text-sm font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none";
 
-  const redirectToKeycloakLogin = () => {
+  
+    const redirectToKeycloakLogin = () => {
     window.location.href = "http://localhost:8080/realms/myrealm/protocol/openid-connect/auth" +
     "?client_id=myclient" +
     "&redirect_uri=http://localhost:3000/profile" +
