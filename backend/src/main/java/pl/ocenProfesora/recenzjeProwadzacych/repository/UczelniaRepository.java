@@ -18,6 +18,11 @@ public class UczelniaRepository {
         return jdbcTemplate.query("SELECT id, nazwa, miasto FROM uczelnie", BeanPropertyRowMapper.newInstance(Uczelnia.class));
     }
 
+    public List<String> getAllNames() {
+        List<String> names = jdbcTemplate.queryForList("SELECT nazwa FROM uczelnie", String.class);
+    
+        return names;    }
+
     public Uczelnia getById(int id){
         return jdbcTemplate.queryForObject("SELECT id, nazwa, miasto FROM uczelnie WHERE " + "id = ?", BeanPropertyRowMapper.newInstance(Uczelnia.class), id);
     }

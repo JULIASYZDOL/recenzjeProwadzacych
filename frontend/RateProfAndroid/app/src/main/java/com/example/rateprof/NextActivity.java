@@ -1,29 +1,44 @@
 package com.example.rateprof;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
 
-public class NextActivity extends Activity {
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
+public class NextActivity extends AppCompatActivity {
+    private AdapterProfList adapter;
+    private RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_next);
+        TextView resultTextView = findViewById(R.id.resultTextView);
+        resultTextView.setText("Lista uczelni: ");
 
-        EditText searchEditText = findViewById(R.id.searchEditText);
-        Button searchButton = findViewById(R.id.searchButton);
+        recyclerView = findViewById(R.id.recyclerView);
 
-        searchButton.setOnClickListener(view -> {
-            String searchText = searchEditText.getText().toString();
+        DataViewModel dataViewModel = new ViewModelProvider(this).get(DataViewModel.class);
 
-            Intent intent = new Intent(NextActivity.this, ProfListActivity.class);
+        ApiInterface apiInterface = ApiClient.getClient();
 
-            intent.putExtra("SEARCH_TEXT", searchText);
+        dataViewModel.fetchAllNames(apiInterface);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-            startActivity(intent);
+        dataViewModel.getNamesLiveData().observe(this, new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> names) {
+                adapter = new AdapterProfList(names, NextActivity.this);
+                recyclerView.setAdapter(adapter);
+            }
         });
+
+
     }
 }

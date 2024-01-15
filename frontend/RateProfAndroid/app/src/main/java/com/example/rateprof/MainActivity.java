@@ -17,7 +17,6 @@ public class MainActivity extends Activity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Otwórz nową aktywność (możesz dostosować to do Twoich potrzeb)
                 Intent intent = new Intent(MainActivity.this, NextActivity.class);
                 startActivity(intent);
             }

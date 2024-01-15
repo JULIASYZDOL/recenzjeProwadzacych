@@ -1,6 +1,5 @@
 package com.example.rateprof;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -10,16 +9,15 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Retrofit;
 
 public class ProfListActivity extends AppCompatActivity {
     private DataViewModel dataViewModel;
+    private AdapterProf adapter;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,38 +29,35 @@ public class ProfListActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String searchText = "";
         if (intent != null) {
-            searchText = intent.getStringExtra("SEARCH_TEXT");
+            searchText = intent.getStringExtra("SELECTED_NAME");
 
-            resultTextView.setText("Lista prowadzących na uczelni " + searchText + ": ");
+            if (searchText != null && !searchText.isEmpty()) {
+                resultTextView.setText("Lista prowadzących na uczelni " + searchText + ": ");
+            } else {
+                resultTextView.setText("Lista prowadzących: ");
+            }
         }
 
-        setContentView(R.layout.activity_proflist);
 
         dataViewModel = new ViewModelProvider((ViewModelStoreOwner) this).get(DataViewModel.class);
 
         String nazwaUczelni = searchText;
         ApiInterface apiInterface = ApiClient.getClient();
-        try {
-            dataViewModel.fetchData(nazwaUczelni, apiInterface);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        assert nazwaUczelni != null;
+        dataViewModel.fetchData(nazwaUczelni, apiInterface);
+
+        recyclerView = findViewById(R.id.recyclerView);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
 
         dataViewModel.getNamesLiveData().observe((LifecycleOwner) this, new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> names) {
-                if (names != null) {
-                    generateButtonList(names);
-                }
+                adapter = new AdapterProf(names, ProfListActivity.this);
+                recyclerView.setAdapter(adapter);
             }
         });
     }
 
-    private List<String> generateButtonList(List<String> nazwy) {
-        List<String> buttonList = new ArrayList<>();
-        for(int i = 0; i < nazwy.size(); i++){
-            buttonList.add(nazwy.get(i));
-        }
-        return buttonList;
-    }
 }

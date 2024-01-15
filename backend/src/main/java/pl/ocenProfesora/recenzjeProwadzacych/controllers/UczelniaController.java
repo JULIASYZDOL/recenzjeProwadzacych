@@ -7,7 +7,7 @@ import pl.ocenProfesora.recenzjeProwadzacych.repository.UczelniaRepository;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "http://10.0.2.2", "http://127.0.0.1"})
 @RequestMapping("/uczelnie")
 @RestController
 public class UczelniaController {
@@ -22,6 +22,11 @@ public class UczelniaController {
     @GetMapping("")
     public List<Uczelnia> getAll(){
         return uczelniaRepository.getAll();
+    }
+
+    @GetMapping("/allNames")
+    public List<String> getAllNames(){
+        return uczelniaRepository.getAllNames();
     }
 
     @GetMapping("/{id}")
